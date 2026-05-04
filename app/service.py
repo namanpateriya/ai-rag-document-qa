@@ -16,10 +16,12 @@ def load_document(text):
 
 
 def answer_query(query):
-    if store.index is None:
+    if not hasattr(store, "index") or store.index is None:
         return "error: no document loaded"
 
     context_chunks = store.search(query)
+
+    context = "\n\n".join(context_chunks)
 
     prompt = f"""
 Answer the question based ONLY on the context below.
