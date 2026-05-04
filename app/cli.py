@@ -1,5 +1,5 @@
 import argparse
-from app.service import load_document, answer_query
+from app.service import load_document, answer_query, store
 
 parser = argparse.ArgumentParser()
 
@@ -16,5 +16,8 @@ if args.file:
     print(f"Loaded document with {chunks} chunks")
 
 if args.query:
-    answer = answer_query(args.query)
-    print("\nAnswer:\n", answer)
+    if not hasattr(store, "index") or store.index is None:
+        print("Please load a document first using --file")
+    else:
+        answer = answer_query(args.query)
+        print("\nAnswer:\n", answer)
