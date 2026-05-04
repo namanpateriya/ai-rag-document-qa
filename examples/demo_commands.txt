@@ -1,0 +1,8 @@
+# Load document
+python -m app.cli --file data/sample.txt
+
+# Query
+python -m app.cli --query "What is AI?"
+
+# API
+uvicorn app.main:app --reload
