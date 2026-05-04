@@ -1,0 +1,10 @@
+[
+  {
+    "document": "Artificial Intelligence is the simulation of human intelligence by machines.",
+    "query": "What is AI?"
+  },
+  {
+    "document": "Machine learning is a subset of AI that learns from data.",
+    "query": "What is machine learning?"
+  }
+]
