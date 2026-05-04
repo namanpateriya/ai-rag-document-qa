@@ -24,8 +24,12 @@ class ModelClient:
         try:
             from openai import OpenAI
             api_key = os.getenv("OPENAI_API_KEY")
+
             if not api_key:
                 return "error: missing OPENAI_API_KEY"
+
+            if self.model and "claude" in self.model:
+                return "error: invalid model for openai"
 
             client = OpenAI(api_key=api_key)
 
@@ -36,6 +40,7 @@ class ModelClient:
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.3
             )
+
             return res.choices[0].message.content
 
         except Exception as e:
@@ -46,8 +51,12 @@ class ModelClient:
         try:
             import anthropic
             api_key = os.getenv("ANTHROPIC_API_KEY")
+
             if not api_key:
                 return "error: missing ANTHROPIC_API_KEY"
+
+            if self.model and "gpt" in self.model:
+                return "error: invalid model for anthropic"
 
             client = anthropic.Anthropic(api_key=api_key)
 
@@ -72,20 +81,22 @@ class ModelClient:
         try:
             import google.generativeai as genai
             api_key = os.getenv("GEMINI_API_KEY")
+
             if not api_key:
                 return "error: missing GEMINI_API_KEY"
 
             genai.configure(api_key=api_key)
 
             model_name = self.model or "gemini-1.5-flash"
+
+            if self.model and "gpt" in self.model:
+                return "error: invalid model for gemini"
+
             model = genai.GenerativeModel(model_name)
 
             res = model.generate_content(prompt)
 
-            if hasattr(res, "text") and res.text:
-                return res.text
-
-            return str(res)
+            return getattr(res, "text", "error")
 
         except Exception as e:
             logger.error(f"Gemini error: {e}")
