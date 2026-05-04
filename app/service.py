@@ -16,9 +16,10 @@ def load_document(text):
 
 
 def answer_query(query):
-    context_chunks = store.search(query)
+    if store.index is None:
+        return "error: no document loaded"
 
-    context = "\n\n".join(context_chunks)
+    context_chunks = store.search(query)
 
     prompt = f"""
 Answer the question based ONLY on the context below.
